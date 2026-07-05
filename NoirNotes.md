@@ -17,13 +17,12 @@
  1. Set up database connection ad npm
  2. npm
 
+## PAYSTACK  Integration
+
 # Menu List
  - Create [menu.html]
  - Get images:
     1. Pinterest
-
-## IMAGES NB:
- Use only "png"
 
 
 ## About & Company's policy section
@@ -35,3 +34,8 @@
 
  ## Animation for links
  - Underline animation when hover on any link with (color:)
+
+ ## Fill all form actions
+  That is.
+   -[login.html]
+   -[register.html]
