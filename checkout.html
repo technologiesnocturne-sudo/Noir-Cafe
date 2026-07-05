@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Noir Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Work+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Paystack Popup V2 — must load before checkout.js -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">Noir<span>.</span>Cafe</a>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="#" data-auth-link>Login</a>
+      <a class="nav-cart" href="cart.html">Cart <span class="nav-cart-count" data-cart-count>0</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<main>
+  <div class="container" style="padding-top:40px; padding-bottom:70px;">
+    <div class="page-header">
+      <span class="eyebrow">Almost there</span>
+      <h1>Checkout</h1>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:50px; align-items:flex-start;">
+
+      <!-- Delivery + contact form -->
+      <div>
+        <h3 style="margin-bottom:22px;">Delivery details</h3>
+        <div id="checkout-error" class="form-error"></div>
+        <form id="checkout-form">
+          <div class="field-row">
+            <div class="field">
+              <label for="co-name">Full name</label>
+              <input id="co-name" name="name" type="text" required placeholder="Kwame Mensah">
+            </div>
+            <div class="field">
+              <label for="co-phone">Phone (MoMo number)</label>
+              <input id="co-phone" name="phone" type="tel" required placeholder="055 123 4567">
+            </div>
+          </div>
+          <div class="field">
+            <label for="co-email">Email</label>
+            <input id="co-email" name="email" type="email" required placeholder="[email protected]">
+          </div>
+          <div class="field">
+            <label for="co-address">Delivery address</label>
+            <input id="co-address" name="address" type="text" required placeholder="Plot 5, Osu Oxford Street">
+          </div>
+          <div class="field">
+            <label for="co-city">City / area</label>
+            <input id="co-city" name="city" type="text" required placeholder="Accra">
+          </div>
+          <div class="field">
+            <label for="co-notes">Delivery notes (optional)</label>
+            <textarea id="co-notes" name="notes" rows="2" placeholder="Landmark, gate colour, preferred time…"></textarea>
+          </div>
+
+          <div style="background:var(--espresso-2); border:1px solid var(--line); border-radius:var(--radius); padding:16px; margin-bottom:22px; font-family:var(--font-mono); font-size:0.78rem; color:var(--parchment-dim);">
+            Payment is processed by <strong style="color:var(--parchment);">Paystack</strong>. You can pay with <strong style="color:var(--parchment);">MTN MoMo, Telecel Cash, AirtelTigo Money</strong>, or any debit/credit card.
+          </div>
+
+          <button class="btn btn-primary btn-block" id="checkout-submit" type="submit">Continue to payment</button>
+        </form>
+      </div>
+
+      <!-- Order summary ticket -->
+      <div>
+        <h3 style="margin-bottom:22px;">Your order</h3>
+        <div id="order-summary"></div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span data-year></span> Noir Cafe</span>
+      <span>Payments secured by Paystack · GHS</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/checkout.js"></script>
+</body>
+</html>

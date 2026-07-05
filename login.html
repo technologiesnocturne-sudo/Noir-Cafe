@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Noir Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Work+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nclogo" id="nclogo">
+      <img src="#" alt="Noir Cafe logo" class="nclogo">
+    </div>
+    <a class="logo" href="index.html">Noir<span>.</span>Cafe</a>
+    <div class="nav-links" id="nav-links">
+      <a href="shop.html">Shop</a>
+      <a class="nav-cart" href="cart.html">Cart <span class="nav-cart-count" data-cart-count>0</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<main style="padding:60px 20px;">
+  <div class="form-card">
+    <span class="eyebrow" style="display:block; margin-bottom:18px;">Welcome back</span>
+    <h2 style="margin-bottom:28px; letter-spacing:0.8mm">Log in</h2>
+
+    <div id="login-error" class="form-error"></div>
+
+    <form id="login-form">
+      <div class="field">
+        <label for="l-email">Email</label>
+        <input id="l-email" name="email" type="email" required placeholder="[email protected]">
+      </div>
+      <div class="field">
+        <label for="l-password">Password</label>
+        <input id="l-password" name="password" type="password" required placeholder="••••••••">
+      </div>
+      <button class="btn btn-primary btn-block" type="submit" style="font-size:1rem;text-transform:uppercase;font-weight:900;">Log in</button>
+    </form>
+
+    <p class="form-note muted">No account? <a href="register.html" style="color:var(--copper-light);">Register</a></p>
+  </div>
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

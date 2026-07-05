@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — Noir Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Work+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">Noir<span>.</span>Cafe</a>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="#" data-auth-link>Login</a>
+      <a href="admin/index.html" data-admin-link style="display:none;">Admin</a>
+      <a class="nav-cart" href="cart.html">Cart <span class="nav-cart-count" data-cart-count>0</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<main>
+  <div class="container" style="padding-top:40px; padding-bottom:70px; max-width:700px;">
+    <div class="page-header">
+      <span class="eyebrow">Your order</span>
+      <h1>Cart</h1>
+    </div>
+    <div id="cart-contents"></div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span data-year></span> Noir Cafe</span>
+      <span>Payments secured by Paystack · GHS</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const DELIVERY_FEE = 1500;
+  function render() {
+    const items = Cart.get();
+    const el = document.getElementById('cart-contents');
+    if (!items.length) {
+      el.innerHTML = `
+        <div class="empty-state">
+          <span class="eyebrow">Nothing here yet</span>
+          <h3>Your cart is empty</h3>
+          <a class="btn btn-primary" href="shop.html" style="margin-top:20px;">Browse the menu</a>
+        </div>`;
+      return;
+    }
+
+    const subtotal = Cart.subtotal();
+    const total = subtotal + DELIVERY_FEE;
+
+    el.innerHTML = `
+      ${items.map(i => `
+        <div class="cart-line">
+          <img src="${i.image_url}" alt="${escapeHtml(i.name)}">
+          <div>
+            <div class="cart-line-title">${escapeHtml(i.name)}</div>
+            <div class="qty-control">
+              <button type="button" data-dec="${i.productId}" aria-label="Decrease">−</button>
+              <span>${i.quantity}</span>
+              <button type="button" data-inc="${i.productId}" aria-label="Increase">+</button>
+            </div>
+            <a class="remove-link" href="#" data-remove="${i.productId}">Remove</a>
+          </div>
+          <span class="price">${formatGHS(i.price_pesewas * i.quantity)}</span>
+        </div>`).join('')}
+      <div class="ticket" style="margin-top:32px;">
+        <div class="ticket-row"><span>Subtotal</span><span>${formatGHS(subtotal)}</span></div>
+        <div class="ticket-row"><span>Delivery (Accra flat rate)</span><span>${formatGHS(DELIVERY_FEE)}</span></div>
+        <div class="ticket-total"><span>Total</span><span>${formatGHS(total)}</span></div>
+      </div>
+      <div style="margin-top:24px; display:flex; gap:14px; flex-wrap:wrap;">
+        <a class="btn btn-ghost" href="shop.html">← Continue shopping</a>
+        <a class="btn btn-primary" style="flex:1;" href="checkout.html">Proceed to checkout</a>
+      </div>`;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    render();
+    document.getElementById('cart-contents').addEventListener('click', e => {
+      const dec = e.target.closest('[data-dec]');
+      const inc = e.target.closest('[data-inc]');
+      const rem = e.target.closest('[data-remove]');
+      if (dec) { const i = Cart.get().find(x => x.productId === Number(dec.dataset.dec)); Cart.updateQuantity(Number(dec.dataset.dec), i.quantity - 1); render(); }
+      if (inc) { const i = Cart.get().find(x => x.productId === Number(inc.dataset.inc)); Cart.updateQuantity(Number(inc.dataset.inc), i.quantity + 1); render(); }
+      if (rem) { e.preventDefault(); Cart.remove(Number(rem.dataset.remove)); render(); }
+    });
+  });
+</script>
+</body>
+</html>

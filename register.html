@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Noir Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Work+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nclogo" id="nclogo">
+      <img src="#" alt="Noir Cafe logo" class="nclogo">
+    </div>
+    <a class="logo" href="index.html">Noir<span>.</span>Cafe</a>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a class="nav-cart" href="cart.html">Cart <span class="nav-cart-count" data-cart-count>0</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<main style="padding:60px 20px;">
+  <div class="form-card">
+    <span class="eyebrow" style="display:block; margin-bottom:18px;">Create an account</span>
+    <h2 style="margin-bottom:28px;letter-spacing: 0.6mm;">Register</h2>
+
+    <div id="register-error" class="form-error"></div>
+
+    <form id="register-form">
+      <div class="field">
+        <label for="r-name">Full name</label>
+        <input id="r-name" name="fullName" type="text" required placeholder="John Doe">
+      </div>
+      <div class="field">
+        <label for="r-email">Email</label>
+        <input id="r-email" name="email" type="email" required placeholder="[email protected]">
+      </div>
+      <div class="field">
+        <label for="r-phone">Phone (optional)</label>
+        <input id="r-phone" name="phone" type="tel" placeholder="055 123 4567">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="r-password">Password</label>
+          <input id="r-password" name="password" type="password" required placeholder="Min 8 characters">
+        </div>
+        <div class="field">
+          <label for="r-confirm">Confirm password</label>
+          <input id="r-confirm" name="confirmPassword" type="password" required placeholder="Repeat password">
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Create account</button>
+    </form>
+
+    <p class="form-note muted">Already have an account? <a href="login.html" style="color:var(--copper-light);">Log in</a></p>
+  </div>
+</main>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

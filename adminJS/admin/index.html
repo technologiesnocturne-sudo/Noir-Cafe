@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noir Cafe — Specialty Coffee, Accra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..500&family=Work+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">Noir<span>.</span>Cafe</a>
+    <div class="nav-links" id="nav-links">
+      <a href="shop.html">Shop</a>
+      <a href="/login.html" data-auth-link>Login</a>
+      <a href="admin/index.html" data-admin-link style="display:none;">Admin</a>
+      <a class="nav-cart" href="cart.html">Cart <span class="nav-cart-count" data-cart-count>0</span></a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Specialty coffee · Accra, Ghana</span>
+        <h1>Coffee roasted with intent.</h1>
+        <p>We source single-origin beans from across West Africa, roast them in-house, and ship them to your door — or your cup.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="shop.html">Browse the menu</a>
+          <a class="btn btn-ghost" href="shop.html?category=coffee-beans">Shop</a>
+        </div>
+      </div>
+      <div class="hero-figure">
+        <img src="#" alt=" a cup of espresso over a dark surface">
+        <div class="hero-tag"> Dark Roast — GHS 85.00</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">On the menu</span>
+          <h2>Featured this season</h2>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="shop.html">See everything →</a>
+      </div>
+      <div class="grid" id="featured-grid">
+        <p class="muted">Loading…</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section class="section">
+    <div class="container text-center">
+      <span class="eyebrow">How it works</span>
+      <h2 style="margin-bottom:40px;">Order in four steps</h2>
+      <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:28px;">
+        <div><div style="font-family:var(--font-display); font-size:2.6rem; color:var(--copper); margin-bottom:12px;">01</div><h3 style="font-size:1rem;">Browse</h3><p>Filter by category or search for exactly what you're after.</p></div>
+        <div><div style="font-family:var(--font-display); font-size:2.6rem; color:var(--copper); margin-bottom:12px;">02</div><h3 style="font-size:1rem;">Add to cart</h3><p>Choose your quantity. Mix beans, brewed cups and pastries freely.</p></div>
+        <div><div style="font-family:var(--font-display); font-size:2.6rem; color:var(--copper); margin-bottom:12px;">03</div><h3 style="font-size:1rem;">Pay with MoMo or card</h3><p>MTN MoMo, Telecel Cash, AirtelTigo Money, or any debit card.</p></div>
+        <div><div style="font-family:var(--font-display); font-size:2.6rem; color:var(--copper); margin-bottom:12px;">04</div><h3 style="font-size:1rem;">Delivered</h3><p>We dispatch same day within Accra. Track via your account.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="font-size:1.3rem; margin-bottom:12px;">Noir<span style="color:var(--copper-light);">.</span>Cafe</div>
+        <p style="font-size:0.88rem;">Specialty coffee roasted and delivered across Accra, Ghana.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="shop.html?category=coffee-beans">Coffee Beans</a></li>
+          <li><a href="shop.html?category=brewed-coffee">Brewed Coffee</a></li>
+          <li><a href="shop.html?category=pastries">Pastries</a></li>
+          <li><a href="shop.html?category=merch">Merch</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <ul>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="account.html">My orders</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Delivery policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year></span> Noir Cafe. All rights reserved.</span>
+      <span>Payments secured by Paystack · GHS</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const grid = document.getElementById('featured-grid');
+    try {
+      const { products } = await api('/products?featured=1', { auth: false });
+      if (!products.length) { grid.innerHTML = '<p class="muted">Nothing featured right now.</p>'; return; }
+      grid.innerHTML = products.map(p => `
+        <div class="card">
+          <a class="card-media" href="product.html?slug=${encodeURIComponent(p.slug)}">
+            <img src="${p.image_url}" alt="${escapeHtml(p.name)}" loading="lazy">
+          </a>
+          <div class="card-body">
+            <span class="card-cat">${escapeHtml(p.category_name || '')}</span>
+            <h3 class="card-title"><a href="product.html?slug=${encodeURIComponent(p.slug)}">${escapeHtml(p.name)}</a></h3>
+            <div class="card-foot">
+              <span class="price">${formatGHS(p.price_pesewas)}</span>
+              <a class="btn btn-sm btn-primary" href="product.html?slug=${encodeURIComponent(p.slug)}">View</a>
+            </div>
+          </div>
+        </div>`).join('');
+    } catch (e) { grid.innerHTML = `<p class="muted">${escapeHtml(e.message)}</p>`; }
+  });
+</script>
+</body>
+</html>
