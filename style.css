@@ -60,7 +60,7 @@ p { margin: 0 0 1em; color: var(--parchment-dim); }
 
 .container {
   max-width: var(--max-width);
-  margin: 0 auto;
+  margin:  auto;
   padding: 0 28px;
 }
 
