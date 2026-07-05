@@ -32,4 +32,6 @@
 ## Animations
  - wavy hr{class"divider"} for beneath nav & before footer
  - color gray division as old version
+
+ ## Animation for links
  - Underline animation when hover on any link with (color:)
