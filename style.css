@@ -121,9 +121,9 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .nclogo{
-  width: 75px;
-  height: 60px;
-  border: 1px solid rgba(230, 222, 221,0.4);
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(230, 222, 221,0.12);
   border-radius: 70%;
   align-items:center;
   display: flex;
