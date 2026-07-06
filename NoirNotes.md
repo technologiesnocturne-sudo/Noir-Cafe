@@ -39,3 +39,10 @@
   That is.
    -[login.html]
    -[register.html]
+
+## Menu display
+ Inspo:
+  - Apple Airplay
+   - forward, backward, scroll bar by side(more info)
+   - image section at the top
+   - 

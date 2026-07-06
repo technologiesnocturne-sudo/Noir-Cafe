@@ -122,15 +122,17 @@ button { font-family: inherit; cursor: pointer; }
 
 .nclogo{
   width: 100px;
+  max-width: 100px;
   height: 100px;
-  border: 1px solid rgba(230, 222, 221,0.12);
   border-radius: 70%;
   align-items:center;
   display: flex;
+  margin-left: 2rem;
 }
+.noirlogo{margin-left:6.5rem;border: 1px solid rgba(181, 69, 58, 0.12);border-radius: 70%;}
 .logo {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 2rem;
   letter-spacing: 0.02em;
 }
 .logo span { color: var(--copper-light); }
