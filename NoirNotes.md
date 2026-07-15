@@ -14,10 +14,12 @@
  2. With responsive js buttons and add-to-cart functionality
 
 ## Integrate MySql
- 1. Set up database connection ad npm
+ 1. Set up database connection and npm
  2. npm
 
 ## PAYSTACK  Integration
+1. Get Public_Key
+2. Get Secret_Key
 
 # Menu List
  - Create [menu.html]
