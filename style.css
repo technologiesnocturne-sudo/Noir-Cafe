@@ -404,3 +404,16 @@ button { font-family: inherit; cursor: pointer; }
 .fb:hover{color:#C17F45}
 .fb{cursor: pointer;}
 .logo:hover{color: #C17F45;}
+
+.section-alt{
+  display:flexbox;
+  max-width:800px;
+  height:500px;
+  border-radius:20px;
+  border:1px solid rgba(255,254,254,0.9)
+}
+
+.form-filed{
+  padding:2rem;
+  margin:2px 3px 2px 3px;
+}
