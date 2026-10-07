@@ -20,8 +20,9 @@ router.post('/paystack', async (req, res) => {
 
     res.sendStatus(200);
   } catch (err) {
+    // Non-2xx makes Paystack retry the delivery, so a transient DB error can't lose a payment.
     console.error('Webhook processing error:', err);
-    res.sendStatus(200);
+    res.sendStatus(500);
   }
 });
 

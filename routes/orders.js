@@ -6,6 +6,10 @@ const { generateOrderNumber } = require('../utils/orderNumber');
 
 const router = express.Router();
 
+// Paystack statuses that can never become 'success' again.
+const TERMINAL_FAILURE_STATES = new Set(['failed', 'reversed']);
+const MAX_LINE_QUANTITY = 50;
+
 const DELIVERY_FEE_PESEWAS = 1500; // flat GHS 15.00 delivery fee, kept simple on purpose
 
 /**
@@ -34,12 +38,28 @@ async function markOrderPaidIfNeeded(reference, paystackData) {
     }
 
     if (paystackData.status !== 'success') {
-      await conn.query('UPDATE orders SET status = ? WHERE id = ?', ['cancelled', order.id]);
-      await conn.commit();
-      return { ok: false, reason: 'payment_not_successful' };
+      // Only a definitively failed/reversed charge cancels the order. Mobile money is
+      // asynchronous: 'pending', 'ongoing', 'processing', 'queued' and 'abandoned' can
+      // still become 'success' later, so the order must stay pending for the webhook.
+      if (TERMINAL_FAILURE_STATES.has(paystackData.status)) {
+        await conn.query('UPDATE orders SET status = ? WHERE id = ?', ['cancelled', order.id]);
+        await conn.commit();
+        return { ok: false, reason: 'payment_not_successful' };
+      }
+      await conn.rollback();
+      return { ok: false, reason: 'payment_pending', order };
+    }
+
+    // Defense in depth: the charge must match what we asked Paystack to collect.
+    if (Number(paystackData.amount) !== Number(order.total_pesewas) ||
+        String(paystackData.currency || '').toUpperCase() !== order.currency) {
+      await conn.rollback();
+      console.error(`Payment mismatch for ${order.order_number}: expected ${order.total_pesewas} ${order.currency}, got ${paystackData.amount} ${paystackData.currency}`);
+      return { ok: false, reason: 'amount_mismatch' };
     }
 
     const [items] = await conn.query('SELECT * FROM order_items WHERE order_id = ?', [order.id]);
+    let needsReview = false;
 
     for (const item of items) {
       if (!item.product_id) continue;
@@ -51,12 +71,13 @@ async function markOrderPaidIfNeeded(reference, paystackData) {
         // Not enough stock left — proceed but flag for manual review rather than
         // failing a payment that has already been captured by Paystack.
         console.warn(`Stock shortfall for product ${item.product_id} on order ${order.order_number}`);
+        needsReview = true;
       }
     }
 
     await conn.query(
-      `UPDATE orders SET status = 'paid', payment_channel = ?, paid_at = NOW() WHERE id = ?`,
-      [paystackData.channel || null, order.id]
+      `UPDATE orders SET status = 'paid', payment_channel = ?, needs_review = ?, paid_at = NOW() WHERE id = ?`,
+      [paystackData.channel || null, needsReview ? 1 : 0, order.id]
     );
 
     await conn.commit();
@@ -99,7 +120,10 @@ router.post('/', attachUserIfPresent, async (req, res, next) => {
     const lineItems = [];
     for (const item of items) {
       const product = productById[Number(item.productId)];
-      const quantity = Math.max(1, Number(item.quantity) || 1);
+      const quantity = Number(item.quantity);
+      if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_LINE_QUANTITY) {
+        return res.status(400).json({ error: `Quantity must be a whole number between 1 and ${MAX_LINE_QUANTITY}.` });
+      }
       if (!product) {
         return res.status(400).json({ error: 'One or more items in your cart are no longer available.' });
       }
@@ -181,6 +205,13 @@ router.get('/verify/:reference', async (req, res, next) => {
 
     if (!result.ok && result.reason === 'order_not_found') {
       return res.status(404).json({ error: 'Order not found.' });
+    }
+    if (!result.ok && result.reason === 'payment_pending') {
+      // Still being confirmed (e.g. mobile money prompt not yet approved). The webhook
+      // will finalize it; return the order as-is so the success page shows "pending".
+      const [rows] = await pool.query('SELECT * FROM orders WHERE payment_reference = ?', [reference]);
+      const [pendingItems] = await pool.query('SELECT * FROM order_items WHERE order_id = ?', [rows[0].id]);
+      return res.status(202).json({ pending: true, order: rows[0], items: pendingItems });
     }
     if (!result.ok) {
       return res.status(402).json({ error: 'Payment was not successful.' });
