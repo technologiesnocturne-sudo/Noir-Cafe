@@ -37,7 +37,15 @@ Display four product on grid
 
 ```
 
-### Card Design
+### Menu Display
 ```text
 Inspo: Apple Airplay 
+More details about how it will look ("inspo.drawio")
+
 ```
+
+```text
+The Menu
+                --------------
+                Menu Display
+                --------------
