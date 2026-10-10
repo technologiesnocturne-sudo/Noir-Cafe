@@ -74,7 +74,6 @@ CREATE TABLE IF NOT EXISTS orders (
   payment_reference     VARCHAR(100)  NULL UNIQUE,
   payment_channel       VARCHAR(40)   NULL,
   paid_at               TIMESTAMP     NULL,
-  needs_review          TINYINT(1)    NOT NULL DEFAULT 0,
   created_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
   INDEX idx_orders_status (status),

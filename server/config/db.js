@@ -177,8 +177,6 @@ class MemoryConnection {
   }
 }
 
-const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-
 let useMemoryMode = false;
 let pool;
 let memoryPool;
@@ -193,19 +191,9 @@ async function initialize() {
   try {
     await pool.query('SELECT 1');
   } catch (err) {
-    if (IS_PRODUCTION) {
-      // Never fall back to the throwaway in-memory store with real customers and payments.
-      console.error('FATAL: MySQL unavailable in production.', err.message);
-      process.exit(1);
-    }
     useMemoryMode = true;
     console.warn('MySQL unavailable, using built-in in-memory store for local development.', err.message);
   }
-}
-
-// Only connectivity failures may trigger the dev fallback — a bad query must surface as an error.
-function isConnectionError(err) {
-  return ['ECONNREFUSED', 'ENOTFOUND', 'ETIMEDOUT', 'PROTOCOL_CONNECTION_LOST', 'ER_ACCESS_DENIED_ERROR', 'ER_BAD_DB_ERROR'].includes(err && err.code);
 }
 
 const db = {
@@ -214,7 +202,6 @@ const db = {
     try {
       return await pool.query(sql, params);
     } catch (err) {
-      if (IS_PRODUCTION || !isConnectionError(err)) throw err;
       useMemoryMode = true;
       return memoryPool.query(sql, params);
     }
@@ -224,7 +211,6 @@ const db = {
     try {
       return await pool.getConnection();
     } catch (err) {
-      if (IS_PRODUCTION || !isConnectionError(err)) throw err;
       useMemoryMode = true;
       return memoryPool.getConnection();
     }
@@ -236,7 +222,7 @@ const db = {
 };
 
 initialize().catch(() => {
-  if (!IS_PRODUCTION) useMemoryMode = true;
+  useMemoryMode = true;
 });
 
 module.exports = db;

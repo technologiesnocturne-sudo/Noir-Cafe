@@ -1,5 +1,9 @@
 /* ===================================================================
-   Noir Cafe — Design
+   Noir Cafe — Design tokens
+   Palette: deep roast blacks, parchment, and a copper/gold crema accent.
+   Signature motif: the "receipt ticket" — cart, checkout summary and
+   the order confirmation are styled like a till slip, set in mono type
+   with a dashed perforation edge and a hand-stamped "PAID" mark.
 =================================================================== */
 :root {
   --noir: #14100D;
@@ -24,7 +28,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth;}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
