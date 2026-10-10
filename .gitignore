@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+logs/
+coverage/
+.DS_Store
+*.log
+inspo.draw.io
+products.md
+
